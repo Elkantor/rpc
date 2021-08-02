@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    struct addrinfo hints;
-    memset(&hints, 0, sizeof(hints));
+    struct addrinfo hints = {0};
     hints.ai_family = AF_INET6; // set to AF_INET to use IPv4
     hints.ai_socktype = SOCK_DGRAM;
 
