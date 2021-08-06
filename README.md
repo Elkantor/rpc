@@ -5,7 +5,15 @@ RPC client/server in C using UDP
 
 ### On Linux
 With gcc:
+
+-- server
 ```bash
-gcc server/server.c -o server
-gcc client/client.c -o client
+cd server && gcc server.c -o server
+./server
+```
+
+-- client
+```bash
+cd client && gcc client.c -o client
+./client IPv6 message
 ```
