@@ -7,16 +7,16 @@
 2. [Windows (cl, gcc or clang) *soon*](#on-windows)
 
 ### On Linux
-With gcc:
+Replace **cc** by **gcc** or **clang**:
 
 *server*
 ```bash
-cd server && gcc server.c -o server
+cd server && cc server.c -o server
 ./server
 ```
 
 *client*
 ```bash
-cd client && gcc client.c -o client
+cd client && cc client.c -o client
 ./client IPv6 message
 ```
