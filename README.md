@@ -3,7 +3,7 @@
 
 ## Installing / Getting started
 
-1. [Linux (gcc or clang)](#On_Linux)
+1. [Linux (gcc or clang)](#on-linux)
 
 ### On Linux
 With gcc:
