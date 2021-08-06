@@ -1,5 +1,5 @@
 # rpc
-RPC client/server in C using UDP
+> Simple RPC client/server in C using UDP socket (currently only for linux)
 
 ## Build the program
 
