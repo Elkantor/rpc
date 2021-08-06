@@ -1,7 +1,9 @@
 # rpc
 > Simple RPC client/server in C using UDP socket (currently only for linux)
 
-## Build the program
+## Installing / Getting started
+
+1. [Linux (gcc or clang)](#On_Linux)
 
 ### On Linux
 With gcc:
