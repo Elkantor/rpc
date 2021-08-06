@@ -6,13 +6,13 @@ RPC client/server in C using UDP
 ### On Linux
 With gcc:
 
--- server
+*server*
 ```bash
 cd server && gcc server.c -o server
 ./server
 ```
 
--- client
+*client*
 ```bash
 cd client && gcc client.c -o client
 ./client IPv6 message
