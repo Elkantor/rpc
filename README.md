@@ -4,6 +4,7 @@
 ## Installing / Getting started
 
 1. [Linux (gcc or clang)](#on-linux)
+2. [Windows (cl, gcc or clang) *soon*](#on-windows)
 
 ### On Linux
 With gcc:
