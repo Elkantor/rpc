@@ -7,15 +7,8 @@
 #define config rpc_server_config
 #define helper rpc_helper_network
 
-#define PORT "4950"    // the port users will be connecting to
-
-
 int main(void)
 {
-    struct sockaddr_storage their_addr;
-    char buffer[config.buffer_length_max];
-    socklen_t addr_len;
-    char s[INET6_ADDRSTRLEN];
 
     struct addrinfo hints   = { 0 };
     hints.ai_family         = AF_INET6;     // set to AF_INET to use IPv4
@@ -24,7 +17,7 @@ int main(void)
 
     struct addrinfo* servinfo;
     {
-        const int rv = getaddrinfo(NULL, PORT, &hints, &servinfo);
+        const int rv = getaddrinfo(NULL, config.port, &hints, &servinfo);
         if (rv != 0)
         {
             fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
@@ -43,7 +36,8 @@ int main(void)
             continue;
         }
 
-        if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+        if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1)
+        {
             close(sockfd);
             perror("listener: bind");
             continue;
@@ -62,21 +56,27 @@ int main(void)
 
     printf("listener: waiting to recvfrom...\n");
 
-    addr_len = sizeof their_addr;
-    int numbytes;
-    if ((numbytes = recvfrom(sockfd, buffer, config.buffer_length_max -1 , 0,
-        (struct sockaddr *)&their_addr, &addr_len)) == -1) {
-        perror("recvfrom");
-        exit(1);
-    }
+    while(1)
+    {
+        struct sockaddr_storage their_addr;
+        socklen_t addr_len = sizeof their_addr;
+        char buffer[config.buffer_length_max];
 
-    printf("listener: got packet from %s\n",
-        inet_ntop(their_addr.ss_family,
-            helper.sockaddr_get((struct sockaddr *)&their_addr),
-            s, sizeof s));
-    printf("listener: packet is %d bytes long\n", numbytes);
-    buffer[numbytes] = '\0';
-    printf("listener: packet contains \"%s\"\n", buffer);
+        // receive data from socket
+        int numbytes = recvfrom(sockfd, buffer, config.buffer_length_max -1 , 0, (struct sockaddr *)&their_addr, &addr_len);
+        if (numbytes  == -1)
+        {
+            perror("recvfrom");
+            exit(1);
+        }
+
+        char s[INET6_ADDRSTRLEN];
+        const char* client_addr = inet_ntop(their_addr.ss_family, helper.sockaddr_get((struct sockaddr *)&their_addr), s, sizeof s);
+        printf("listener: got packet from %s\n", client_addr);
+        printf("listener: packet is %d bytes long\n", numbytes);
+        buffer[numbytes] = '\0';
+        printf("listener: packet contains \"%s\"\n", buffer);
+    }
 
     close(sockfd);
 
