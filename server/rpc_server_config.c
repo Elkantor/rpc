@@ -1,10 +1,4 @@
-const struct rpc_server_config
-{
-    const unsigned int      buffer_length_max;
-    const char*             port;
-} 
-rpc_server_config = 
-{
-    .buffer_length_max  = 100,
-    .port               = "4950",
-};
+
+
+const unsigned int  rpc_server_config_buffer_length_max   = 64000;
+const char*         rpc_server_config_port                = "4950";

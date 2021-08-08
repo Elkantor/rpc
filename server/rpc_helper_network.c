@@ -2,7 +2,7 @@
 ** rpc_helper_network -- contains helper methods to do network
 */
 
-#if defined(rpc_helper_network_self_contain)
+#if defined(RPC_HELPER_NETWORK_SELF_CONTAINED)
     #include <sys/socket.h>
     #include <netinet/in.h>
     #include <netdb.h>
@@ -12,18 +12,24 @@
 #endif
 
 // get sockaddr IPv4 or IPv6 address:
-void* sockaddr_get(const struct sockaddr* sa)
+void* rpc_helper_network_sockaddr_get(const struct sockaddr* sa)
 {
-    if (sa->sa_family == AF_INET)
+    // ipv4 address
+    if (sa->sa_family == AF_INET) 
     {
-        return &(((struct sockaddr_in*)sa)->sin_addr);
+        struct sockaddr_in* socket_address_ipv4 = (struct sockaddr_in*)sa;
+        struct in_addr*     socker_address_ip   = &(socket_address_ipv4->sin_addr);
+        return socker_address_ip;
     }
 
-    return &(((struct sockaddr_in6*)sa)->sin6_addr);
+    // ipv6 address
+    struct sockaddr_in6*    socket_address_ipv6 = (struct sockaddr_in6*)sa;
+    struct in6_addr*         socket_address_ip   = &(socket_address_ipv6->sin6_addr);
+    return socket_address_ip;
 }
 
 // create a udp socket with ipv6 on port passed in parameter, return the socket file descriptor
-int udp_ipv6_socket_create(const char* port)
+int rpc_helper_network_udp_ipv6_socket_create(const char* port)
 {
     struct addrinfo hints   = { 0 };
     hints.ai_family         = AF_INET6;     // set to AF_INET to use IPv4
@@ -71,15 +77,3 @@ int udp_ipv6_socket_create(const char* port)
 
     return sockfd;
 }
-
-
-const struct rpc_helper_network
-{
-    void*   (*sockaddr_get)(const struct sockaddr* sa);
-    int     (*udp_ipv6_socket_create)(const char* port);
-}
-rpc_helper_network =
-{
-    .sockaddr_get = sockaddr_get,
-    .udp_ipv6_socket_create = udp_ipv6_socket_create,
-};
