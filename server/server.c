@@ -9,7 +9,7 @@
 
 int main(void)
 {
-
+    //int sockfd = helper.udp_ipv6_socket_create(config.port);
     struct addrinfo hints   = { 0 };
     hints.ai_family         = AF_INET6;     // set to AF_INET to use IPv4
     hints.ai_socktype       = SOCK_DGRAM;   // UDP datagrams
@@ -53,7 +53,6 @@ int main(void)
     }
 
     freeaddrinfo(servinfo);
-
     printf("listener: waiting to recvfrom...\n");
 
     while(1)
